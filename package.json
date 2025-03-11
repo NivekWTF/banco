@@ -12,5 +12,11 @@
         "laravel-vite-plugin": "^1.2.0",
         "tailwindcss": "^4.0.0",
         "vite": "^6.0.11"
+<<<<<<< HEAD
+=======
+    },
+    "dependencies": {
+        "@vitejs/plugin-vue": "^5.2.1"
+>>>>>>> 29718117c869778364ad496991207c06424cdf69
     }
 }
