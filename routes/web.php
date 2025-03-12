@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/abrir-caja', [ChequeController::class, 'abrirCaja'])->name('abrir-caja');
 Route::post('/entregar-billetes', [ChequeController::class, 'entregarBilletes'])->name('entregar-billetes');
+Route::post('/agregar-billetes', [ChequeController::class, 'agregarBilletes'])->name('agregar-billetes');
+
 
 Route::get('/', function () {
     return view('home');

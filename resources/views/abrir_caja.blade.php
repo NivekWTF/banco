@@ -69,7 +69,10 @@
             </div>
         @endisset
         <div class="text-center">
-            <button type="button" class="btn btn-success my-2">Agregar billetes</button>
+            <form action="{{ route('agregar-billetes') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-success my-2">Agregar billetes</button>
+            </form>
             <button type="button" class="btn btn-danger my-2">Corte de caja</button>
         </div>
     </div>

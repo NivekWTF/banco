@@ -31,4 +31,10 @@ class ChequeController extends Controller
 
         return view('abrir_caja', compact('billetesEntregados'))->with('info', 'Billetes entregados.');
     }
+
+    public function agregarBilletes()
+    {
+        Cheque::agregarBilletes();
+        return redirect()->back()->with('success', 'Billetes agregados con éxito.');
+    }
 }

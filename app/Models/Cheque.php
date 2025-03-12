@@ -75,4 +75,25 @@ class Cheque extends Model
 
         return $billetesEntregados;
     }
+
+    public static function agregarBilletes()
+    {
+        $denominaciones = [1000, 500, 200, 100, 50, 20, 10, 5, 2, 1];
+        DB::transaction(function () use ($denominaciones) {
+            foreach ($denominaciones as $denominacion) {
+                $billete = self::where('denominacion', $denominacion)->first();
+                if ($billete) {
+                    // Si ya existe, sumar la cantidad
+                    $billete->cantidad += rand(1, 100);
+                    $billete->save();
+                } else {
+                    // Si no existe, crear un nuevo registro
+                    self::create([
+                        'denominacion' => $denominacion,
+                        'cantidad' => rand(1, 100)
+                    ]);
+                }
+            }
+        });
+    }
 }
