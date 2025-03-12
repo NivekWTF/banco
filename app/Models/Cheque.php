@@ -40,6 +40,12 @@ class Cheque extends Model
         $denominaciones = [1000, 500, 200, 100, 50, 20, 10, 5, 2, 1];
         $billetesEntregados = [];
 
+        // Verificar si hay suficiente dinero en la caja
+        $totalDisponible = self::sum(DB::raw('denominacion * cantidad'));
+        if ($importe > $totalDisponible) {
+            return false; // No hay suficiente dinero
+        }
+
         DB::transaction(function () use ($importe, $denominaciones, &$billetesEntregados) {
             foreach ($denominaciones as $denominacion) {
                 if ($importe >= $denominacion) {
