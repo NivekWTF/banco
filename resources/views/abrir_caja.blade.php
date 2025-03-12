@@ -26,13 +26,7 @@
         @endif
         <form action="{{ route('abrir-caja') }}" method="POST">
             @csrf
-            <div class="form-group">
-                <label for="importe">Importe:</label>
-                <input type="number" class="form-control" id="importe" name="importe" placeholder="Ingrese el importe">
-            </div>
-            <div class="alert alert-warning" role="alert">
-                Detalle de los billetes a entregar
-            </div>
+            
             <div class="text-center">
                 <button type="submit" class="btn btn-primary my-2">Abrir caja</button>
             </div>
@@ -42,6 +36,9 @@
             <div class="form-group">
                 <label for="importe">Importe:</label>
                 <input type="number" class="form-control" id="importe" name="importe" placeholder="Ingrese el importe">
+            </div>
+            <div class="alert alert-warning" role="alert">
+                Detalle de los billetes a entregar
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-secondary my-2">Entregar billetes</button>
