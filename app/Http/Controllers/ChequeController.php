@@ -29,10 +29,6 @@ class ChequeController extends Controller
         
         $billetesEntregados = Cheque::entregarBilletes($importe);
 
-        if ($billetesEntregados === false) {
-            return redirect()->back()->with('error', 'No hay suficiente dinero para ese cheque.');
-        }
-
         return view('abrir_caja', compact('billetesEntregados'))->with('info', 'Billetes entregados.');
     }
 

@@ -70,7 +70,8 @@
                 @csrf
                 <button type="submit" class="btn btn-success my-2">Agregar billetes</button>
             </form>
-            <button type="button" class="btn btn-danger my-2">Corte de caja</button>
+            <button action type="button" class="btn btn-danger my-2">Corte de caja</button>
+            <a href="/prueba">Regreso</a>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
