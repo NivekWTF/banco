@@ -24,6 +24,12 @@ class Transacciones
     {
         $billetesEntregados = [];
 
+        // Verificar si hay suficiente dinero en la caja
+        $totalDisponible = Cheque::sum(DB::raw('denominacion * cantidad'));
+        if ($importe > $totalDisponible) {
+            return ['error' => 'No hay suficiente dinero en la caja para entregar el importe solicitado.'];
+        }
+
         DB::transaction(function () use ($importe, $denominaciones, &$billetesEntregados) {
             foreach ($denominaciones as $denominacion) {
                 if ($importe >= $denominacion) {

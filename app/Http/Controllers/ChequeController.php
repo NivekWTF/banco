@@ -27,7 +27,13 @@ class ChequeController extends Controller
         // Imprimir en la consola del navegador
         echo "<script>console.log('Importe recibido: " . $importe . "');</script>";
         
-        $billetesEntregados = Cheque::entregarBilletes($importe);
+        $resultado = Cheque::entregarBilletes($importe);
+
+        if (isset($resultado['error'])) {
+            return redirect()->back()->with('error', $resultado['error']);
+        }
+
+        $billetesEntregados = $resultado; // Asignar el resultado a la variable $billetesEntregados
 
         return view('abrir_caja', compact('billetesEntregados'))->with('info', 'Billetes entregados.');
     }
