@@ -21,11 +21,11 @@ class ChequeController extends Controller
     {
         $importe = $request->input('importe');
         
-        // Imprimir en el log de Laravel
-        Log::info('Importe recibido: ' . $importe);
+        // // Imprimir en el log de Laravel
+        // Log::info('Importe recibido: ' . $importe);
         
-        // Imprimir en la consola del navegador
-        echo "<script>console.log('Importe recibido: " . $importe . "');</script>";
+        // // Imprimir en la consola del navegador
+        // echo "<script>console.log('Importe recibido: " . $importe . "');</script>";
         
         $resultado = Cheque::entregarBilletes($importe);
 

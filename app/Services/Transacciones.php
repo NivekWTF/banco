@@ -34,13 +34,14 @@ class Transacciones
         DB::transaction(function () use ($importe, $denominaciones, &$billetesEntregados) {
             foreach ($denominaciones as $denominacion) {
                 if ($importe >= $denominacion) {
-                            // Imprimir en el log de Laravel
-                    Log::info('Denomicacion: ' . $denominacion);
-        
-        // Imprimir en la consola del navegador
-                    echo "<script>console.log('Denominacion; " . $denominacion . "');</script>";
+
 
                     $billete = Cheque::where('denominacion', $denominacion)->where('sucursal', 1)->lockForUpdate()->first();
+                                                // Imprimir en el log de Laravel
+                                                Log::info('Billete: ' . $billete);
+        
+                                                // Imprimir en la consola del navegador
+                                                            echo "<script>console.log('Billete; " . $billete . "');</script>";
                     if ($billete && $billete->cantidad > 0) {
                         $cantidad = min(intdiv($importe, $denominacion), $billete->cantidad);
                         $importe -= $cantidad * $denominacion;
@@ -57,19 +58,19 @@ class Transacciones
             }
 
             // Asegurar que se entregue al menos una denominación
-            if (empty($billetesEntregados)) {
-                $billete = Cheque::where('denominacion', $denominaciones[count($denominaciones) - 1])->where('sucursal', 1)->lockForUpdate()->first();
-                if ($billete && $billete->cantidad > 0) {
-                    $billete->cantidad -= 1;
-                    $billete->entregados += 1;
-                    $billete->save();
+            // if (empty($billetesEntregados)) {
+            //     $billete = Cheque::where('denominacion', $denominaciones[count($denominaciones) - 1])->where('sucursal', 1)->lockForUpdate()->first();
+            //     if ($billete && $billete->cantidad > 0) {
+            //         $billete->cantidad -= 1;
+            //         $billete->entregados += 1;
+            //         $billete->save();
 
-                    $billetesEntregados[] = [
-                        'denominacion' => $billete->denominacion,
-                        'cantidad' => 1
-                    ];
-                }
-            }
+            //         $billetesEntregados[] = [
+            //             'denominacion' => $billete->denominacion,
+            //             'cantidad' => 1
+            //         ];
+            //     }
+            // }
         });
 
         return $billetesEntregados;
@@ -85,15 +86,7 @@ class Transacciones
                     // Si ya existe, sumar la cantidad
                     $billete->cantidad += rand(1, 100);
                     $billete->save();
-                } else {
-                    // Si no existe, crear un nuevo registro
-                    Cheque::create([
-                        'sucursal' => 1,
-                        'denominacion' => $denominacion,
-                        'cantidad' => rand(1, 100),
-                        'entregados' => 0
-                    ]);
-                }
+                } 
             }
         });
     }
