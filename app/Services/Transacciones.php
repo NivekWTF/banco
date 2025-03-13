@@ -3,6 +3,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Cheque;
+use Illuminate\Support\Facades\Log;
 
 class Transacciones
 {
@@ -33,6 +34,12 @@ class Transacciones
         DB::transaction(function () use ($importe, $denominaciones, &$billetesEntregados) {
             foreach ($denominaciones as $denominacion) {
                 if ($importe >= $denominacion) {
+                            // Imprimir en el log de Laravel
+                    Log::info('Denomicacion: ' . $denominacion);
+        
+        // Imprimir en la consola del navegador
+                    echo "<script>console.log('Denominacion; " . $denominacion . "');</script>";
+
                     $billete = Cheque::where('denominacion', $denominacion)->where('sucursal', 1)->lockForUpdate()->first();
                     if ($billete && $billete->cantidad > 0) {
                         $cantidad = min(intdiv($importe, $denominacion), $billete->cantidad);
