@@ -11,8 +11,10 @@ class Transacciones
         DB::transaction(function () use ($denominaciones) {
             foreach ($denominaciones as $denominacion) {
                 Cheque::create([
+                    'sucursal' => 1,
                     'denominacion' => $denominacion,
-                    'cantidad' => rand(1, 100) // Genera una cantidad aleatoria de billetes
+                    'cantidad' => rand(1, 100), // Genera una cantidad aleatoria de billetes
+                    'entregados' => 0
                 ]);
             }
         });
@@ -25,11 +27,12 @@ class Transacciones
         DB::transaction(function () use ($importe, $denominaciones, &$billetesEntregados) {
             foreach ($denominaciones as $denominacion) {
                 if ($importe >= $denominacion) {
-                    $billete = Cheque::where('denominacion', $denominacion)->lockForUpdate()->first();
+                    $billete = Cheque::where('denominacion', $denominacion)->where('sucursal', 1)->lockForUpdate()->first();
                     if ($billete && $billete->cantidad > 0) {
                         $cantidad = min(intdiv($importe, $denominacion), $billete->cantidad);
                         $importe -= $cantidad * $denominacion;
                         $billete->cantidad -= $cantidad;
+                        $billete->entregados += $cantidad;
                         $billete->save();
 
                         $billetesEntregados[] = [
@@ -42,9 +45,10 @@ class Transacciones
 
             // Asegurar que se entregue al menos una denominación
             if (empty($billetesEntregados)) {
-                $billete = Cheque::where('denominacion', $denominaciones[count($denominaciones) - 1])->lockForUpdate()->first();
+                $billete = Cheque::where('denominacion', $denominaciones[count($denominaciones) - 1])->where('sucursal', 1)->lockForUpdate()->first();
                 if ($billete && $billete->cantidad > 0) {
                     $billete->cantidad -= 1;
+                    $billete->entregados += 1;
                     $billete->save();
 
                     $billetesEntregados[] = [
@@ -63,7 +67,7 @@ class Transacciones
         $denominaciones = [1000, 500, 200, 100, 50, 20, 10, 5, 2, 1];
         DB::transaction(function () use ($denominaciones) {
             foreach ($denominaciones as $denominacion) {
-                $billete = Cheque::where('denominacion', $denominacion)->lockForUpdate()->first();
+                $billete = Cheque::where('denominacion', $denominacion)->where('sucursal', 1)->lockForUpdate()->first();
                 if ($billete) {
                     // Si ya existe, sumar la cantidad
                     $billete->cantidad += rand(1, 100);
@@ -71,8 +75,10 @@ class Transacciones
                 } else {
                     // Si no existe, crear un nuevo registro
                     Cheque::create([
+                        'sucursal' => 1,
                         'denominacion' => $denominacion,
-                        'cantidad' => rand(1, 100)
+                        'cantidad' => rand(1, 100),
+                        'entregados' => 0
                     ]);
                 }
             }

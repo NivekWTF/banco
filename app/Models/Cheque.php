@@ -9,12 +9,12 @@ class Cheque extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['denominacion', 'cantidad'];
+    protected $fillable = ['sucursal', 'denominacion', 'cantidad', 'entregados'];
 
     public static function abrirCaja()
     {
         // Verificar si ya existen billetes en la caja
-        if (self::count() > 0) {
+        if (self::where('sucursal', 1)->count() > 0) {
             return false; // Indica que ya existen billetes
         }
 

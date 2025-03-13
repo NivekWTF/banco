@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('cheques', function (Blueprint $table) {
             $table->id();
+            $table->integer('sucursal');
             $table->integer('denominacion');
+            $table->integer('entregados');
             $table->integer('cantidad');
             $table->timestamps();
         });
